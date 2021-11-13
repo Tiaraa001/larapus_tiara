@@ -12,10 +12,26 @@ class Book extends Model
     protected $fillable = ['title', 'author_id', 'amount', 'cover'];
     public $timestamps = true;
 
-    public function autho()
+    public function author()
     {
         //data dari model "Book" bisa dimiliki oleh model "Author"
         //melalui fk "author_id"
         return $this->belongsTo('App\Models\Author', 'author_id');
+    }
+    public function image()
+    {
+        if ($this->cover && file_exists(public_path('images/books/' . $this->cover))) {
+            return asset('images/books/' . $this->cover);
+        } else {
+            return asset('images/no_image.png');
+        }
+    }
+
+    public function deleteImage()
+    {
+        if ($this->cover && file_exists(public_path('images/books/' . $this->cover))) {
+            return unlink(public_path('images/books/' . $this->cover));
+        }
+
     }
 }
